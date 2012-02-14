@@ -1,189 +1,191 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
 {\fonttbl\f0\fnil\fcharset0 Monaco;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red0\green115\blue0;\red191\green0\blue0;
-}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue191;\red0\green115\blue0;
+\red191\green0\blue0;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\fs28 \cf0 (\
-	\cf2 SynthDef\cf0 .new(\cf3 \\basicDecay\cf0 ,\{\cf2 arg\cf0  freq = 0, att = 0.01, dec = 0.2, amp = 0.5;\
+\f0\fs28 \cf2 (\
+	\cf3 SynthDef\cf2 .new(\cf4 \\basicDecay\cf2 ,\{\cf3 arg\cf2  freq = 0, att = 0.01, dec = 0.2, amp = 0.5;\
 		\
-		\cf2 var\cf0  sig, freqSpec;\
-		freqSpec = \cf2 ControlSpec\cf0 (100,2000,\cf3 \\exp\cf0 );\
-		sig = [\cf2 LFCub\cf0 .ar(freqSpec.map(freq),0,0.5),\cf2 LFCub\cf0 .ar(freqSpec.map(freq) + 2,0,0.5)];\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .perc(att, dec,1,-2),1, doneAction: 2) * amp;	\
-		\cf2 Out\cf0 .ar(0,sig);\
-		\
-	\}).send(s);\
-	\
-	\cf2 SynthDef\cf0 .new(\cf3 \\basicSustain\cf0 ,\{\cf2 arg\cf0  freq = 0, att = 0.01, dec = 0.2, trig = 1, amp = 0.5;\
-		\
-		\cf2 var\cf0  sig, freqSpec;\
-		freqSpec = \cf2 ControlSpec\cf0 (100,2000,\cf3 \\exp\cf0 );\
-		sig = [\cf2 LFCub\cf0 .ar(freqSpec.map(freq),0,0.5),\cf2 LFCub\cf0 .ar(freqSpec.map(freq) + 2,0,0.5)];\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .asr(att,1,dec,3),trig, doneAction: 2) * amp;	\
-		\cf2 Out\cf0 .ar(0,sig);\
+		\cf3 var\cf2  sig, freqSpec;\
+		freqSpec = \cf3 ControlSpec\cf2 (100,2000,\cf4 \\exp\cf2 );\
+		sig = [\cf3 LFCub\cf2 .ar(freqSpec.map(freq),0,0.5),\cf3 LFCub\cf2 .ar(freqSpec.map(freq) + 2,0,0.5)];\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .perc(att, dec,1,-2),1, doneAction: 2) * amp;	\
+		\cf3 Out\cf2 .ar(0,sig);\
 		\
 	\}).send(s);\
 	\
+	\cf3 SynthDef\cf2 .new(\cf4 \\basicSustain\cf2 ,\{\cf3 arg\cf2  freq = 0, att = 0.01, dec = 0.2, trig = 1, amp = 0.5;\
+		\
+		\cf3 var\cf2  sig, freqSpec;\
+		freqSpec = \cf3 ControlSpec\cf2 (100,2000,\cf4 \\exp\cf2 );\
+		sig = [\cf3 LFCub\cf2 .ar(freqSpec.map(freq),0,0.5),\cf3 LFCub\cf2 .ar(freqSpec.map(freq) + 2,0,0.5)];\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .asr(att,1,dec,3),trig, doneAction: 2) * amp;	\
+		\cf3 Out\cf2 .ar(0,sig);\
+		\
+	\}).send(s);\
 	\
-	\cf2 SynthDef\cf0 .new(\cf3 \\clipSustain\cf0 ,\{\cf2 arg\cf0  trig = 1, freq = 0.1, clip = 0.5, att = 0.01, dec = 0.2, amp = 1;\
 	\
-		\cf2 var\cf0  sig, freqSpec;\
-		freqSpec = \cf2 ControlSpec\cf0 (5,30,\cf3 \\exp\cf0 );\
+	\cf3 SynthDef\cf2 .new(\cf4 \\clipSustain\cf2 ,\{\cf3 arg\cf2  trig = 1, freq = 0.1, clip = 0.5, att = 0.01, dec = 0.2, amp = 1;\
+	\
+		\cf3 var\cf2  sig, freqSpec;\
+		freqSpec = \cf3 ControlSpec\cf2 (5,30,\cf4 \\exp\cf2 );\
 		freq = freqSpec.map(freq);\
-		sig = \cf2 Saw\cf0 .ar(freq,1).clip(clip);\
-		sig = \cf2 Pan2\cf0 .ar(sig, 0) * amp;\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .asr(att,1,dec),trig, doneAction: 2);\
-		\cf2 Out\cf0 .ar(0,sig);\
+		sig = \cf3 Saw\cf2 .ar(freq,1).clip(clip);\
+		sig = \cf3 Pan2\cf2 .ar(sig, 0) * amp;\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .asr(att,1,dec),trig, doneAction: 2);\
+		\cf3 Out\cf2 .ar(0,sig);\
 	\
 	\}).send(s);\
 	\
 \
-	\cf2 SynthDef\cf0 .new(\cf3 \\clipDecay\cf0 ,\{\cf2 arg\cf0  trig = 1, freq = 0.1, filFreqH = 0, filFreqL = 1, att = 0.01, dec = 0.2, amp = 1;\
+	\cf3 SynthDef\cf2 .new(\cf4 \\clipDecay\cf2 ,\{\cf3 arg\cf2  trig = 1, freq = 0.1, filFreqH = 0, filFreqL = 1, att = 0.01, dec = 0.2, amp = 1;\
 	\
-		\cf2 var\cf0  sig, freqSpec, filFreqSpec;\
-		freqSpec = \cf2 ControlSpec\cf0 (5,30,\cf3 \\exp\cf0 );\
-		filFreqSpec =  \cf2 ControlSpec\cf0 (100,5000, \cf3 \\exp\cf0 );\
+		\cf3 var\cf2  sig, freqSpec, filFreqSpec;\
+		freqSpec = \cf3 ControlSpec\cf2 (5,30,\cf4 \\exp\cf2 );\
+		filFreqSpec =  \cf3 ControlSpec\cf2 (100,5000, \cf4 \\exp\cf2 );\
 		freq = freqSpec.map(freq);\
-		sig = \cf2 LFSaw\cf0 .ar(freq,0,1);\
-		sig = \cf2 HPF\cf0 .ar(sig, filFreqSpec.map(filFreqH));\
-		sig = \cf2 LPF\cf0 .ar(sig, filFreqSpec.map(filFreqL));\
-		sig = \cf2 Pan2\cf0 .ar(sig, 0) * amp;\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .perc(att, dec,1,-2),1, doneAction: 2);\
-		\cf2 Out\cf0 .ar(0,sig);\
+		sig = \cf3 LFSaw\cf2 .ar(freq,0,1);\
+		sig = \cf3 HPF\cf2 .ar(sig, filFreqSpec.map(filFreqH));\
+		sig = \cf3 LPF\cf2 .ar(sig, filFreqSpec.map(filFreqL));\
+		sig = \cf3 Pan2\cf2 .ar(sig, 0) * amp;\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .perc(att, dec,1,-2),1, doneAction: 2);\
+		\cf3 Out\cf2 .ar(0,sig);\
 	\
 	\}).send(s);\
 \
 	\
 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
-\cf0 	\
-	\cf2 SynthDef\cf0 .new(\cf3 \\elecSustain\cf0 , \{\cf2 arg\cf0  trig = 1, freq = 0.1, att = 0.01, dec = 0.01, amp = 1, \
+\cf2 	\
+	\cf3 SynthDef\cf2 .new(\cf4 \\elecSustain\cf2 , \{\cf3 arg\cf2  trig = 1, freq = 0.1, att = 0.01, dec = 0.01, amp = 1, \
 										separate =  0.1, speed = 0.5, filFreq= 0.5; \
 		\
-		\cf2 var\cf0  sig, env, freqSpec, speedSpec, filFreqSpec, trig2;\
-		freqSpec = \cf2 ControlSpec\cf0 (50,200,\cf3 \\exp\cf0 );\
-		speedSpec = \cf2 ControlSpec\cf0 (3,10, \cf3 \\linear\cf0 );\
-		filFreqSpec = \cf2 ControlSpec\cf0 (100,2000, \cf3 \\exp\cf0 );\
+		\cf3 var\cf2  sig, env, freqSpec, speedSpec, filFreqSpec, trig2;\
+		freqSpec = \cf3 ControlSpec\cf2 (50,200,\cf4 \\exp\cf2 );\
+		speedSpec = \cf3 ControlSpec\cf2 (3,10, \cf4 \\linear\cf2 );\
+		filFreqSpec = \cf3 ControlSpec\cf2 (100,2000, \cf4 \\exp\cf2 );\
 		\
 		speed = speedSpec.map(speed);\
 		freq = freqSpec.map(freq);\
 		\
-		trig2 = \cf2 LFPulse\cf0 .kr(speed);\
-		env = \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .linen(0,1/(speed * (1+separate)),0),trig2);\
-		sig = \cf2 LFNoise0\cf0 .ar(freq) * env * amp;\
-		sig = \cf2 HPF\cf0 .ar(sig, filFreqSpec.map(filFreq)); \
-		sig = \cf2 Pan2\cf0 .ar(sig * env, 0);\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .asr(att,1,dec),trig, doneAction: 2);\
-		\cf2 Out\cf0 .ar(0,sig);\
+		trig2 = \cf3 LFPulse\cf2 .kr(speed);\
+		env = \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .linen(0,1/(speed * (1+separate)),0),trig2);\
+		sig = \cf3 LFNoise0\cf2 .ar(freq) * env * amp;\
+		sig = \cf3 HPF\cf2 .ar(sig, filFreqSpec.map(filFreq)); \
+		sig = \cf3 Pan2\cf2 .ar(sig * env, 0);\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .asr(att,1,dec),trig, doneAction: 2);\
+		\cf3 Out\cf2 .ar(0,sig);\
 		\
 	\}).send(s);\
 	\
 	\
-	\cf2 SynthDef\cf0 .new(\cf3 \\brownGlitchDecay\cf0 , \{\cf2 arg\cf0  trig = 1, freq = 0.1, filFreq = 0, gAtt = 0, amp = 1;\
+	\cf3 SynthDef\cf2 .new(\cf4 \\brownGlitchDecay\cf2 , \{\cf3 arg\cf2  trig = 1, freq = 0.1, filFreq = 0, gAtt = 0, amp = 1;\
 		\
-		\cf2 var\cf0  sig, env, freqSpec, attSpec, filFreqSpec;\
-		freqSpec = \cf2 ControlSpec\cf0 (50,4000,\cf3 \\exp\cf0 );\
-		filFreqSpec = \cf2 ControlSpec\cf0 (10,10000,\cf3 \\exp\cf0 );\
-		attSpec = \cf2 ControlSpec\cf0 (0.005,0.1, \cf3 \\linear\cf0 );\
+		\cf3 var\cf2  sig, env, freqSpec, attSpec, filFreqSpec;\
+		freqSpec = \cf3 ControlSpec\cf2 (50,4000,\cf4 \\exp\cf2 );\
+		filFreqSpec = \cf3 ControlSpec\cf2 (10,10000,\cf4 \\exp\cf2 );\
+		attSpec = \cf3 ControlSpec\cf2 (0.005,0.1, \cf4 \\linear\cf2 );\
 		freq = freqSpec.map(freq);\
 		gAtt = attSpec.map(gAtt);\
 		\
-		env = \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .linen(gAtt,0.001,0),1, doneAction:2);\
-		sig = \cf2 RLPF\cf0 .ar(\cf2 BrownNoise\cf0 .ar(1),freq,0.01) * env * amp;\
-		sig= \cf2 HPF\cf0 .ar(sig, filFreqSpec.map(filFreq));\
-		sig = \cf2 Pan2\cf0 .ar(sig,0);\
-		\cf2 Out\cf0 .ar(0,sig);\
+		env = \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .linen(gAtt,0.001,0),1, doneAction:2);\
+		sig = \cf3 RLPF\cf2 .ar(\cf3 BrownNoise\cf2 .ar(1),freq,0.01) * env * amp;\
+		sig= \cf3 HPF\cf2 .ar(sig, filFreqSpec.map(filFreq));\
+		sig = \cf3 Pan2\cf2 .ar(sig,0);\
+		\cf3 Out\cf2 .ar(0,sig);\
 		\
 	\}).send(s);\
 \
 \
-	\cf2 SynthDef\cf0 .new(\cf3 \\swellSustain\cf0 , \{\cf2 arg\cf0  trig = 1, att = 0.01, dec = 0.01,  amp = 1,\
-									freq = 0.1, sm1 = 0.33, sm2 = 0.33, sm3 = 0.33;\
+\
+	\cf3 SynthDef\cf2 .new(\cf4 \\swellSustain\cf2 , \{\cf3 arg\cf2  trig = 1, att = 0.01, dec = 0.01,  amp = 1,\
+									freq = 0.1, sm1 = 0.33, sm2 = 0.33, sm3 = 0.33, width = 0.5;\
 		\
-		\cf2 var\cf0  width,freqSpec, sig, sig1, sig2, sig3;\
+		\cf3 var\cf2  widthEnv,freqSpec, sig, sig1, sig2, sig3, vols;\
 		\
-		freqSpec = \cf2 ControlSpec\cf0 (40,60,\cf3 \\exp\cf0 );\
+		vols = [sm1,sm2,sm3].normalizeSum;\
+		freqSpec = \cf3 ControlSpec\cf2 (40,250,\cf4 \\exp\cf2 );\
 		freq = freqSpec.map(freq);\
 		\
-		width = \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .new([0,0.5,0],[att,0.001],1),trig);\
+		widthEnv = \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .new([0,width,0],[att,0.001],1),trig);\
 		\
-		sig1 = \cf2 VarSaw\cf0 .ar(freq,0,0.5 + width,10).softclip;\
-		sig2 = \cf2 VarSaw\cf0 .ar(freq,1,0.5 + width,10);\
-		sig3 = \cf2 VarSaw\cf0 .ar(freq,0.5,0.5,10).softclip;\
-		sig = (sig1 * \cf2 MouseX\cf0 .kr(0,1)) + (sig2 * \cf2 MouseX\cf0 .kr(1,0)) + (sig3 * \cf2 MouseY\cf0 .kr(0,1)) * amp;\
+		sig1 = \cf3 VarSaw\cf2 .ar(freq,1,0.5 + widthEnv,10);\
+		sig2 = \cf3 VarSaw\cf2 .ar(freq * 3/2,1,0.5 + widthEnv,10);\
+		sig3 = \cf3 VarSaw\cf2 .ar(freq * 4/3,1,0.5 + widthEnv,10);\
+		sig = (sig1 * vols[0]) + (sig2 * vols[1]) + (sig3 * vols[2]) * amp * 0.2;\
 		\
-		sig = sig * \cf2 EnvGen\cf0 .kr(\cf2 Env\cf0 .asr(att,1,0.001,5),trig, doneAction: 2);\
+		sig = sig * \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 .asr(att,1,0.001,5),trig, doneAction: 2);\
 		\
-		sig = \cf2 Pan2\cf0 .ar(sig, 0);\
+		sig = \cf3 Pan2\cf2 .ar(sig, 0);\
 	\
-		\cf2 Out\cf0 .ar(0,sig);\
+		\cf3 Out\cf2 .ar(0,sig);\
 		\
 	\}).send(s);\
+\
 	\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
-\cf0 \
+\cf2 \
 )\
 \
 \
 \
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
-\cf4 //---osc starts here\cf0 \
+\cf5 //---osc starts here\cf2 \
 (\
 \
 	~ini.remove;\
-	~ini=\cf2 nil\cf0 ;\
-	~ini = \cf2 OSCresponderNode\cf0 (\cf2 nil\cf0 , \cf3 '/init'\cf0 , \{\cf2 |i, r, msg|\cf0  \
+	~ini=\cf3 nil\cf2 ;\
+	~ini = \cf3 OSCresponderNode\cf2 (\cf3 nil\cf2 , \cf4 '/init'\cf2 , \{\cf3 |i, r, msg|\cf2  \
 		\
 		msg.postln;\
-		~sustainSynths.do\{\cf2 |item, i|\cf0  item.set(\cf3 \\trig\cf0 , 0)\};\
-		~sustainSynths = \cf2 Dictionary\cf0 .new;\
+		~sustainSynths.do\{\cf3 |item, i|\cf2  item.set(\cf4 \\trig\cf2 , 0)\};\
+		~sustainSynths = \cf3 Dictionary\cf2 .new;\
 		\
 	\}).add;\
 	\
 	~blipOn.remove;\
-	~blipOn=\cf2 nil\cf0 ;\
-	~blipOn = \cf2 OSCresponderNode\cf0 (\cf2 nil\cf0 , \cf3 '/blipOn'\cf0 , \{\cf2 |i, r, msg|\cf0  \
+	~blipOn=\cf3 nil\cf2 ;\
+	~blipOn = \cf3 OSCresponderNode\cf2 (\cf3 nil\cf2 , \cf4 '/blipOn'\cf2 , \{\cf3 |i, r, msg|\cf2  \
 		\
-		\cf4 // 1. index\cf0 \
-		\cf4 // 2. synthDef\cf0 \
-		\cf4 // 3. envType 0 = ASR, 1 = AR\cf0 \
-		\cf4 // 4. attack\cf0 \
-		\cf4 // 5. decay\cf0 \
-		\cf4 // 6 -10. userParams 0 - 4\cf0 \
+		\cf5 // 1. index\cf2 \
+		\cf5 // 2. synthDef\cf2 \
+		\cf5 // 3. envType 0 = ASR, 1 = AR\cf2 \
+		\cf5 // 4. attack\cf2 \
+		\cf5 // 5. decay\cf2 \
+		\cf5 // 6 -10. userParams 0 - 4\cf2 \
 \
 		\
-		if(msg[2] == \cf3 'basic'\cf0 )\{\
+		if(msg[2] == \cf4 'basic'\cf2 )\{\
 			if(msg[3] == 0)\{\
-				~sustainSynths.put(msg[1], \cf2 Synth\cf0 .new(\cf3 \\basicSustain\cf0 ,\
-				[\cf3 \\att\cf0 , msg[4], \cf3 \\dec\cf0 , msg[5],\cf3 \\freq\cf0 , msg[6], \cf3 \\amp\cf0 , msg[8]]));\
+				~sustainSynths.put(msg[1], \cf3 Synth\cf2 .new(\cf4 \\basicSustain\cf2 ,\
+				[\cf4 \\att\cf2 , msg[4], \cf4 \\dec\cf2 , msg[5],\cf4 \\freq\cf2 , msg[6], \cf4 \\amp\cf2 , msg[8]]));\
 				\
 			\}\{\
-				x = \cf2 Synth\cf0 .new(\cf3 \\basicDecay\cf0 , [\cf3 \\att\cf0 , msg[4], \cf3 \\dec\cf0 , msg[5], \cf3 \\freq\cf0 , msg[6], \cf3 \\amp\cf0 , msg[8]]);\
+				x = \cf3 Synth\cf2 .new(\cf4 \\basicDecay\cf2 , [\cf4 \\att\cf2 , msg[4], \cf4 \\dec\cf2 , msg[5], \cf4 \\freq\cf2 , msg[6], \cf4 \\amp\cf2 , msg[8]]);\
 				\};	\
 		\};\
 		\
-		if(msg[2] == \cf3 'clip'\cf0 )\{\
+		if(msg[2] == \cf4 'clip'\cf2 )\{\
 			if(msg[3] == 0)\{\
 				~sustainSynths.put(msg[1], \
-				\cf2 Synth\cf0 .new(\cf3 \\clipSustain\cf0 ,\
-				[\cf3 \\att\cf0 , msg[4], \cf3 \\dec\cf0 , msg[5],\cf3 \\freq\cf0 , msg[6], \cf3 \\clip\cf0 , msg[7], \cf3 \\amp\cf0 , msg[8]])\
+				\cf3 Synth\cf2 .new(\cf4 \\clipSustain\cf2 ,\
+				[\cf4 \\att\cf2 , msg[4], \cf4 \\dec\cf2 , msg[5],\cf4 \\freq\cf2 , msg[6], \cf4 \\clip\cf2 , msg[7], \cf4 \\amp\cf2 , msg[8]])\
 				);\
 				\
 				\}\{\
 					\
-					x = \cf2 Synth\cf0 .new(\cf3 \\clipDecay\cf0 ,\
-				[\cf3 \\att\cf0 , msg[4], \cf3 \\dec\cf0 , msg[5],\cf3 \\freq\cf0 , msg[6], \cf3 \\filFreqL\cf0 , msg[7], \cf3 \\filFreqH\cf0 , msg[8], \cf3 \\amp\cf0 , msg[9]])\
+					x = \cf3 Synth\cf2 .new(\cf4 \\clipDecay\cf2 ,\
+				[\cf4 \\att\cf2 , msg[4], \cf4 \\dec\cf2 , msg[5],\cf4 \\freq\cf2 , msg[6], \cf4 \\filFreqL\cf2 , msg[7], \cf4 \\filFreqH\cf2 , msg[8], \cf4 \\amp\cf2 , msg[9]])\
 				\
 				\};	\
 			\
 		\};\
 			\
-		if(msg[2] == \cf3 'elec'\cf0 )\{\
+		if(msg[2] == \cf4 'elec'\cf2 )\{\
 			if(msg[3] == 0)\{\
 				~sustainSynths.put(msg[1], \
-				\cf2 Synth\cf0 .new(\cf3 \\elecSustain\cf0 ,\
-				[\cf3 \\att\cf0 , msg[4], \cf3 \\dec\cf0 , msg[5],\cf3 \\freq\cf0 , msg[6], \cf3 \\filFreq\cf0 , msg[7],\cf3 \\speed\cf0 , msg[8],\cf3 \\separate\cf0 , msg[9], \cf3 \\amp\cf0 , msg[10]])\
+				\cf3 Synth\cf2 .new(\cf4 \\elecSustain\cf2 ,\
+				[\cf4 \\att\cf2 , msg[4], \cf4 \\dec\cf2 , msg[5],\cf4 \\freq\cf2 , msg[6], \cf4 \\filFreq\cf2 , msg[7],\cf4 \\speed\cf2 , msg[8],\cf4 \\separate\cf2 , msg[9], \cf4 \\amp\cf2 , msg[10]])\
 				);\
 				\}\{\
 					\
@@ -192,23 +194,23 @@
 			\
 		\};\
 		\
-		if(msg[2] == \cf3 'brownGlitch'\cf0 )\{\
+		if(msg[2] == \cf4 'brownGlitch'\cf2 )\{\
 			\
 			if(msg[3] == 0)\{\
 						\
 				\}\{\
-					x = \cf2 Synth\cf0 .new(\cf3 \\brownGlitchDecay\cf0 ,[\cf3 \\freq\cf0 , msg[6], \cf3 \\filFreq\cf0 , msg[7], \cf3 \\gAtt\cf0 , msg[8], \cf3 \\amp\cf0 , msg[9]])\
+					x = \cf3 Synth\cf2 .new(\cf4 \\brownGlitchDecay\cf2 ,[\cf4 \\freq\cf2 , msg[6], \cf4 \\filFreq\cf2 , msg[7], \cf4 \\gAtt\cf2 , msg[8], \cf4 \\amp\cf2 , msg[9]])\
 				\};	\
 			\
 		\};\
 		\
-		if(msg[2] == \cf3 'swell'\cf0 )\{\
+		if(msg[2] == \cf4 'swell'\cf2 )\{\
 			\
 			if(msg[3] == 0)\{\
 \
 						~sustainSynths.put(msg[1], \
-				\cf2 Synth\cf0 .new(\cf3 \\swellSustain\cf0 ,\
-				[\cf3 \\att\cf0 , msg[4],\cf3 \\freq\cf0 , msg[6], \cf3 \\amp\cf0 , msg[7], \cf3 \\sm1\cf0 , msg[8], \cf3 \\sm1\cf0 , msg[9], \cf3 \\sm1\cf0 , msg[10]])\
+				\cf3 Synth\cf2 .new(\cf4 \\swellSustain\cf2 ,\
+				[\cf4 \\att\cf2 , msg[4],\cf4 \\freq\cf2 , msg[6], \cf4 \\amp\cf2 , msg[7], \cf4 \\sm1\cf2 , msg[8], \cf4 \\sm2\cf2 , msg[9], \cf4 \\sm3\cf2 , msg[10], \cf4 \\width\cf2 , msg[11]])\
 				);\
 				\}\{\
 				\
@@ -220,12 +222,12 @@
 	\}).add;\
 	\
 	~blipOff.remove;\
-	~blipOff=\cf2 nil\cf0 ;\
-	~blipOff = \cf2 OSCresponderNode\cf0 (\cf2 nil\cf0 , \cf3 '/blipOff'\cf0 , \{\cf2 |i, r, msg|\cf0  \
+	~blipOff=\cf3 nil\cf2 ;\
+	~blipOff = \cf3 OSCresponderNode\cf2 (\cf3 nil\cf2 , \cf4 '/blipOff'\cf2 , \{\cf3 |i, r, msg|\cf2  \
 		\
-		\cf4 //1. index\cf0 \
-		\cf4 //2. name\cf0 \
-		~sustainSynths.at(msg[1]).set(\cf3 \\trig\cf0 , 0);\
+		\cf5 //1. index\cf2 \
+		\cf5 //2. name\cf2 \
+		~sustainSynths.at(msg[1]).set(\cf4 \\trig\cf2 , 0);\
 		~sustainSynths.removeAt(msg[1]);\
 \
 	\}).add;\
