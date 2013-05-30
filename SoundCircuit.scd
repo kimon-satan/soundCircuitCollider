@@ -262,10 +262,53 @@ SynthDef.new(\shaperDecay, {
 	outer_env = EnvGen.kr(Env.linen(att, sus * dec ,1-sus * dec, 1, 'welch'),1,doneAction:2 );
 	sig = sig * outer_env;
 
-	Out.ar(0,sig);
+	Out.ar(~masterBus,sig);
 
 
-}).send(s)
+}).send(s);
+
+
+SynthDef.new(\distortDecay, {
+
+	arg att = 0.01, dec = 0.9, freq = 0.1,  filFreq = 0.5, distort = 0.1, res = 0.4, amp = 0.5, pan = 0;
+	var sig, outer_env, freqSpec, panSpec;
+
+	panSpec = ControlSpec(-0.75,0.75,\linear);
+	freqSpec = ControlSpec(50,4000,\exp);
+
+	outer_env = EnvGen.kr(Env.new([0,1,1,0],[att,0,dec],4),1, doneAction:2);
+
+	sig = LPF18.ar(SawDPW.ar([freqSpec.map(freq), freqSpec.map(freq*1.02)]),
+		freqSpec.map(filFreq),res * 10,distort) * amp * outer_env;
+
+
+	sig = Splay.ar(sig,0.25,center:panSpec.map(pan)) * outer_env;
+
+
+	Out.ar(~masterBus,sig);
+
+}).send(s);
+
+SynthDef.new(\distortSustain, {
+
+	arg att = 0.01, dec = 0.9, freq = 0.1,  filFreq = 0.5, distort = 0.1, res = 0.4, amp = 0.5, pan = 0, trig = 1;
+	var sig, outer_env, freqSpec, panSpec;
+
+	panSpec = ControlSpec(-0.75,0.75,\linear);
+	freqSpec = ControlSpec(50,4000,\exp);
+
+	outer_env = EnvGen.kr(Env.asr(att,1,dec,5),trig, doneAction: 2);
+
+	sig = LPF18.ar(SawDPW.ar([freqSpec.map(freq), freqSpec.map(freq*1.02)]),
+		freqSpec.map(filFreq),res * 10,distort) * amp * outer_env;
+
+
+	sig = Splay.ar(sig,0.25,center:panSpec.map(pan)) * outer_env;
+
+
+	Out.ar(~masterBus,sig);
+
+}).send(s);
 
 
 )
@@ -436,6 +479,23 @@ SynthDef.new(\shaperDecay, {
 		}{
 
 			x = Synth.head(nil, \shaperDecay,[\att, msg[5], \dec, msg[6], \sus, msg[7], \freq, msg[8], \c_freq, msg[9], \detune, msg[10], \amp, msg[11], \pan, msg[12]])
+		};
+
+	};
+
+	if(msg[3] == 'distort'){
+
+
+		if(msg[4] == 0){
+
+			~sustainSynths.put(msg[1], msg[2],
+				Synth.head(nil, \distortSustain,
+					[\att, msg[5], \dec, msg[6], \freq, msg[7], \filFreq, msg[8], \res, msg[9], \distort, msg[10], \amp, msg[11], \pan, msg[12]])
+			);
+
+		}{
+
+			x = Synth.head(nil, \distortDecay,[\att, msg[5], \dec, msg[6], \freq, msg[7], \filFreq, msg[8], \res, msg[9], \distort, msg[10], \amp, msg[11], \pan, msg[12]])
 		};
 
 	};

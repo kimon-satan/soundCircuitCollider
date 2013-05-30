@@ -96,3 +96,32 @@ SynthDef.new(\shaperDecay, {
 
 x = Synth.new(\shaperDecay, [\freq, 0.5, \att, 0.8, \sus, 0.5, \dec, 0.8])
 
+
+(
+
+SynthDef.new(\distortDecay, {
+
+	arg att = 0.01, dec = 0.9, amp = 0.5, freq = 0.1, pan = 0, filFreq = 0.5, distort = 0.1, res = 0.4;
+	var sig, outer_env, freqSpec, panSpec;
+
+	panSpec = ControlSpec(-0.75,0.75,\linear);
+	freqSpec = ControlSpec(50,4000,\exp);
+
+	outer_env = EnvGen.kr(Env.new([0,1,1,0],[att,0,dec],4),1, doneAction:2);
+
+	sig = LPF18.ar(SawDPW.ar([freqSpec.map(freq), freqSpec.map(freq*1.02)]),
+		freqSpec.map(filFreq),res * 10,distort) * amp * outer_env;
+
+
+	sig = Splay.ar(sig,0.25,center:panSpec.map(pan)) * outer_env;
+
+
+	Out.ar(0,sig);
+
+}).send(s);
+
+)
+
+
+x = Synth.new(\distortDecay,[\filFreq, 0.8, \freq, 0.2,  \att,0.01, \dec,0.9, \distort, 0.1, \res, 0.1])
+
